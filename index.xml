@@ -12,6 +12,580 @@
 <generator>quarto-1.11.9</generator>
 <lastBuildDate>Mon, 02 Nov 2026 06:00:00 GMT</lastBuildDate>
 <item>
+  <title>Does the NBA Actually Have a Tanking Problem?</title>
+  <dc:creator>Tyler Ahlberg</dc:creator>
+  <link>https://your-website-url.example.com/posts/NBA-Lottery.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>In May, the National Basketball Association took an unprecedented step in how it handles its amateur draft. The NBA reformed its draft lottery system to directly punish the three worst performing teams with only a 5.4% chance at the first overall pick, while teams that finish four through ten will have a 8.1% chance. Followed by positions 11-14 with a 5.4% chance and 15-16 with a 2.7% chance. This marks the first time one of the “big four” North American sports leagues hasn’t outright rewarded the worst performing teams with the top pick or give them the most favorable odds in a lottery system for the amateur draft.</p>
+<p>NBA commissioner Adam Silver would tell you the reason for these drastic changes are because of the practice of “tanking.” Tanking involves a team intentionally losing games with the goal of securing a top pick in the amateur draft, a process that was modernized in the mid 2010s by former Philadelphia 76ers executive, Sam Hinkie. The man behind the infamous “Trust the Process” mantra, though tanking has been present in the NBA for decades with disgraced former Los Angeles Clippers owner Donald Sterling being recorded on tape advocating to lose games for Virginia star Ralph Sampson. Now between the extended history of tanking and the recent lottery reforms the question becomes, does the NBA actually have a tanking problem?</p>
+<p>For this alleged technique of intentionally dropping games to truly be fruitful for those engaged, teams would have to be pretty confident in the level of difference maker a top pick represents.</p>
+<p>Looking from the 2004 NBA Draft to the 2018 NBA Draft, or 15 total years of drafting, one can see how slanted the level of talent is, relative to the draft position by win shares. Win shares is a metric that combines stats that measure offensive contribution such as points and assists with stats that measure defensive contribution such as steals and opponents’ field goal percentage. While not a perfect stat if you’re trying to discern the better of two players, it does a good job showing which players have been a part of winning teams and have had meaningful contributions on those teams.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">draft_datah <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NBADraft_Datah.csv"</span>)</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">win_sharesuh <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> draft_datah <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(Pick) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarize</span>(</span>
+<span id="cb1-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Players_Over_50 =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(WS <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb1-9">  )</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_bar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span>win_sharesuh, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>Pick, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight=</span>Players_Over_50), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"blue"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb1-14">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Draft Pick"</span>,</span>
+<span id="cb1-15">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Number of Players with 50+ Win Shares"</span>,</span>
+<span id="cb1-16">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NBA Draft Picks That Produced More Than 50 Career Win Shares"</span>,</span>
+<span id="cb1-17">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Between the 2004-2018 Drafts, the top talent is found more often in the lottery"</span>,</span>
+<span id="cb1-18">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: Basketball-Reference | By Tyler Ahlberg"</span></span>
+<span id="cb1-19">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-23">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">face =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>)</span>
+<span id="cb1-24">    )</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/NBA-Lottery_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The NBA initially instituted the NBA draft lottery system in 1985, when famed Georgetown center Patrick Ewing was selected first overall by the New York Knicks via the drawing of an (allegedly frozen) envelope. From 1985 to 2018, the lottery saw a pretty standard system of teams receiving better odds the worst their record, aside from adjustments in the early 1990s. Specifically, the worst team in the NBA had a 25% chance at the top pick and the remaining 75% distributed among the other 13 teams, with higher odds going to teams with worse records</p>
+<p>This changed in 2019 after the aforementioned “Trust the Process” era which former 76ers general manager Sam Hinkie was very transparent about his “process” with something of an Al Capone-esque flaunting of his strategy to the media. Under the new system, the three worst teams all had an equal 14% chance at the first overall pick, a substantial decrease from the 25% for the team with the worst record as it was in the previous system. The reform also flattened the odds for teams positioned 4-14, with the fourth worst team having a 12.5% chance, the fifth-worst with 10.5% and slowly decreasing for teams with better records. This change was meant to deter teams from tanking via a lottery system that didn’t allow the bottom teams to consistently secure premiere picks, but did this work?</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">lottery_datah <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NBALottery_Datah.csv"</span>)</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">pre_reform <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> lottery_datah <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(Era <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pre-Reform"</span>)</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">post_reform <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> lottery_datah <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(Era <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Post-Reform"</span>)</span>
+<span id="cb2-10"></span>
+<span id="cb2-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span>pre_reform, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>Draft_Year, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>Pick_Received), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"blue"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span>post_reform, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>Draft_Year, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>Pick_Received), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"red"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb2-15">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NBA Draft Year"</span>,</span>
+<span id="cb2-16">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Draft Pick Received"</span>,</span>
+<span id="cb2-17">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The NBA's Lottery Change is Giving the Worst Teams Worse Picks"</span>,</span>
+<span id="cb2-18">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The pre-reform seasons saw much higher picks than in post-reform years"</span>,</span>
+<span id="cb2-19">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: tankathon, NBA Draft Results | By Tyler Ahlberg"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2011</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2026</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">face =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>)</span>
+<span id="cb2-23">    )</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/NBA-Lottery_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the eight years before the 2019 lottery reform, the worst team in the league didn’t receive less than a top two pick a single time. However, in the eight seasons post-reform, the worst performing team only got a top two pick three times.</p>
+<p>Mechanistically, the 2019 reform did its job: it hurt the value of tanking because teams were no longer a shoo-in for a top two pick even with the league’s worst record. Yet it asks the question, in spite of a rather hitting of the target by the NBA with the 2019 lottery reform, did the reform actually deter teams from tanking?</p>
+<p>The answer? Sort of.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">tanking <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TankingDatah.csv"</span>)</span>
+<span id="cb3-4"></span>
+<span id="cb3-5">pre_reform <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tanking <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(Era <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pre-Reform"</span>)</span>
+<span id="cb3-7"></span>
+<span id="cb3-8">post_reform <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tanking <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(Era <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Post-Reform"</span>)</span>
+<span id="cb3-10"></span>
+<span id="cb3-11">TankingGood <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> pre_reform <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(Follow_Up_Year) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Teams_Bottom_Five=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(Bottom_five))</span>
+<span id="cb3-14"></span>
+<span id="cb3-15">TankingBad <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> post_reform <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(Follow_Up_Year) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Teams_Bottom_Five=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(Bottom_five))</span>
+<span id="cb3-18"></span>
+<span id="cb3-19"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_line</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span>TankingGood, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>Follow_Up_Year, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>Teams_Bottom_Five), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"blue"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_line</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span>TankingBad, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>Follow_Up_Year, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>Teams_Bottom_Five), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"red"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb3-23">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Years After First Bottom-Five Finish"</span>,</span>
+<span id="cb3-24">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Teams Still in Bottom 5"</span>,</span>
+<span id="cb3-25">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Are Teams Being Detered From Tanking?"</span>,</span>
+<span id="cb3-26">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bottom-five finishes over the next three seasons. Blue: 2011-2015; Red: 2019-2023."</span>,</span>
+<span id="cb3-27">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: tankathon, Basketball-Reference | By Tyler Ahlberg"</span></span>
+<span id="cb3-28">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-29">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-30">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(</span>
+<span id="cb3-31">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),</span>
+<span id="cb3-32">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">limits=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-33">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-34">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">face =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>)</span>
+<span id="cb3-35">    ) </span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/NBA-Lottery_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Looking at five seasons before the reform and five seasons after the reform, after their initial bottom-five finish, both groups had the same amount of teams still remaining in the bottom five after two seasons with six each. By the third and final year tracked in the bottom five, the post-reform group actually have less teams hanging around at the bottom than the pre-reform group.</p>
+<p>So it seems that the 2019 lottery overhaul to deter tanking was effective in its ability to steer bad teams away from getting what had previously been almost a guaranteed top 2 pick while simultaneously keeping teams from sticking around the bottom of the pile at a better rate than the years before the reform. Yet we sit here months after the most drastic anti-tanking measure in the history of North American sports. Why? Does the NBA have a tanking problem? It doesn’t seem like it. The measures taken to deter tanking seem to have worked at comparable if not better rather than before the 2019 lottery reform.</p>
+<p>Now we sit here in November 2026, the Sacramento Kings sit at a measly 1-10 record and are set to be punished for it with worse odds at acquiring top talent. Why introduce another reform when the previous one seemingly worked? In the modern NBA bad teams are set to be punished for the first time in the history of the league, discontinuing a staple of not only the NBA, but North American sports at large. The attempted establishment of parity via an even distribution of the top amateur talent every season. The NBA has created a purgatory for bad teams.</p>
+<p><img src="https://your-website-url.example.com/posts/Purgatory.png" class="img-fluid" style="width:70.0%"></p>
+
+
+
+ ]]></description>
+  <category>NBA</category>
+  <category>NBA_Draft</category>
+  <category>Tanking</category>
+  <guid>https://your-website-url.example.com/posts/NBA-Lottery.html</guid>
+  <pubDate>Mon, 02 Nov 2026 06:00:00 GMT</pubDate>
+  <media:content url="https://your-website-url.example.com/posts/LOTTERY.jpg" medium="image" type="image/jpeg" height="81" width="144"/>
+</item>
+<item>
   <title>Post With Code</title>
   <dc:creator>Harlow Malloc</dc:creator>
   <link>https://your-website-url.example.com/posts/post-with-code/</link>
