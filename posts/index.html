@@ -714,13 +714,15 @@ dbl (6): Season, Follow_Up_Year, Wins, Losses, Win Pct, Bottom_five
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>TankingBad, <span class="fu">aes</span>(<span class="at">x=</span>Follow_Up_Year, <span class="at">y=</span>Teams_Bottom_Five), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Years After First Bottom-Five Finish"</span>,</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Bottom-Five Team-Seasons"</span>,</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Teams Still in Bottom 5"</span>,</span>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Are Teams Being Detered From Tanking?"</span>,</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle=</span><span class="st">"Bottom-five team-seasons remaining in the bottom five over the following three years."</span>,</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle=</span><span class="st">"Bottom-five finishes over the next three seasons. Blue: 2011-2015; Red: 2019-2023."</span>,</span>
 <span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption=</span><span class="st">"Source: tankathon, Basketball-Reference | By Tyler Ahlberg"</span></span>
 <span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">16</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">16</span>, <span class="at">by=</span><span class="dv">2</span>),</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">16</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1104,6 +1106,9 @@ dbl (6): Season, Follow_Up_Year, Wins, Losses, Win Pct, Bottom_five
  @ validate: logi TRUE</code></pre>
 </div>
 </div>
+<p>Looking at four years in the pre-reform seasons and four years in the post-reform seasons, after their initial bottom-five both groups saw the same amount of teams still remaining in the bottom five after two seasons with six. In the third and final tracked year in the bottom 5 we see the post-reform group actually have less teams hanging around at the bottom than the pre-reform group.</p>
+<p>So it seems that the initial lottery overhaul to deter tanking was effective in its ability to steer bad teams away from getting what was basically a guaranteed top 2 pick while simultaneously keeping teams from sticking around the bottom of the pile at a better rate than the years before the reform. Yet we sit here months after the most drastic anti-tanking measure in the history of North American sports. Why? Does the NBA have a tanking problem? It doesn’t seem like it, the measures taken to deter tanking seem to have worked at comparable if not better rather than before the 2019 lottery change implementation.</p>
+<p>Now we sit here in early 2026, the Sacramento Kings sit at a measly 1-10 record and are set to be punished for it with worse odds at acquiring top talent after a previous lottery reform seemingly worked? In the modern NBA bad teams are set to be punished for the first time in the history of the league, discontinuing a staple of not only the NBA, but North American sports at large. The attempted installment of parity via an even disreputation of the top amateur talent every season. The NBA has created a purgatory for bad teams.</p>
 
 
 
