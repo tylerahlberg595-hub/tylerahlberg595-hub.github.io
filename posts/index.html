@@ -9,7 +9,7 @@
 <meta name="author" content="Tyler Ahlberg">
 <meta name="dcterms.date" content="2026-11-02">
 
-<title>CHANGE THIS TO BE THE TITLE OF YOUR POST – Tyler Ahlberg’s Sports Blog</title>
+<title>Does the NBA Actually Have a Tanking Problem? – Tyler Ahlberg’s Sports Blog</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -148,7 +148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">CHANGE THIS TO BE THE TITLE OF YOUR POST</h1>
+      <h1 class="title">Does the NBA Actually Have a Tanking Problem?</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">NBA</div>
                 <div class="quarto-category">NBA_Draft</div>
@@ -189,7 +189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>Hello. This is a test post.</p>
+<p>This past May, the National Basketball Association took an unprecedented step in how it handles its amateur draft. The NBA reformed its draft pick lottery system to directly punish the worst three performing teams with only a 5.4% chance at the first overall pick, while teams who finish 4-10 will have a 8.1% chance at the first overall pick, followed by positions 11-14 with a 5.4% chance and 14-16 with a 2.7% chance. This marks the first time one of the “big four” North American sports leagues didn’t outright reward the worst performing teams with the top pick or give them the most favorable odds in a lottery system for the amateur draft. Thus posing the question of why? Why has the NBA made such a drastic change to a decades old system designed to promote parity? The answer NBA commissioner Adam Silver may give involves teams’ attempted pursuit of the bottom, better known online as “tanking.” Tanking involves a team intentionally dropping games with the goal of securing a top pick in the amateur draft. However, for this alleged technique to truly be fruitful for those engaged, teams would have to be pretty confident in the level of difference maker a top pick represents. Looking from the 2004 NBA Draft to the 2018 NBA Draft, or 15 total years of drafting one can see how slanted the level of talent is, relative to the draft position by win shares. Win shares is a statistic that combines stats that measure offensive contribution such as points and assists with stats that measure defensive contribution such as steals and opponent FG%. While not a perfect stat if you’re trying to discern the better of two players it does a good job showing which players have been a part of winning teams and have had meaningful contributions on those teams.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -206,6 +206,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>draft_datah <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"NBADraft_Datah.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 899 Columns: 13
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (2): Team, Player
+dbl (11): Draft_Year, Pick, Games, Minutes, Points, Assists, Rebounds, WS, W...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>win_shares <span class="ot">&lt;-</span> draft_datah <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Pick) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Players_Over_50 =</span> <span class="fu">sum</span>(WS <span class="sc">&gt;</span> <span class="dv">50</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(win_shares, <span class="fu">aes</span>(<span class="at">x =</span> Pick, <span class="at">y =</span> Players_Over_50)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"NBA Draft Picks That Produced Over 50+ Win Shares"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Draft classes 2004-2018"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Draft Pick Number"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Number of Players with 50+ Win Shares"</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">60</span>, <span class="at">by =</span> <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 
